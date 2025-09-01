@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma:wght@400&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#fafafa',
+                        'off-black': '#1a1a1a',
+                        'soft-gray': '#f5f5f5',
+                        'dark-gray': '#2a2a2a'
+                    },
+                    fontFamily: {
+                        'michroma': ['Michroma', 'sans-serif'],
+                        'comfortaa': ['Comfortaa', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    
+
+    <section class="py-16 bg-soft-gray min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-michroma font-bold text-off-black mb-4">SHOP YOR FAVORITE</h3>
+                <p class="text-gray-600 font-comfortaa max-w-2xl mx-auto">Explore our carefully curated collections, each designed to elevate your wardrobe with timeless pieces.</p>
+            </div>
+            
+            <!--  Grid -->
+
+
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 font-comfortaa">
+
+
+                <% products.forEach((pro)=> { %>
+                
+                <div class="group cursor-pointer">
+                    <div class="bg-off-white rounded-xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200">
+                        <div class="h-56 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
+                            <img 
+                                src="<%= pro.url %>" 
+                                alt="Jackets" 
+                                class="w-full h-full object-cover"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                            />
+                            <div class="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 items-center justify-center" style="display: none;">
+                                <svg class="w-12 h-12 text-off-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="p-4 text-center border-t flex flex-col gap-4 w-full min-h-[25vh]">
+                            <div>
+                                <h4 class="font-comfortaa font-semibold text-off-black mb-1"><%= pro.name %></h4>
+                                <p class="text-sm text-gray-500 font-comfortaa">Premium outerwear</p>
+                            </div>
+
+                            <div class="flex flex-row w-full justify-between px-3 mt-auto py-3">
+                                <span>$<%= pro.price %></span>
+                                <button class="hover:text-blue-500">
+                                    <i class="fa-solid fa-cart-plus"></i>
+                                </button>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+                
+          <% }) %>
+   
+            </div>
+        </div>
+    </section>
+
+
+</body>
+</html>

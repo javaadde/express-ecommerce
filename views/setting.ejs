@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+   <link href="https://fonts.googleapis.com/css2?family=Michroma:wght@400&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#fafafa',
+                        'off-black': '#1a1a1a',
+                        'soft-gray': '#f5f5f5',
+                        'dark-gray': '#2a2a2a'
+                    },
+                    fontFamily: {
+                        'michroma': ['Michroma', 'sans-serif'],
+                        'comfortaa': ['Comfortaa', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-off-white min-h-screen">
+    <div class="max-w-2xl mx-auto p-6">
+        <!-- Profile Card -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8">
+            <!-- Header -->
+            <div class="flex items-center space-x-4 mb-8 font-michroma">
+                <div onclick="window.location.href='http://localhost:5000/logout'"
+                class="w-20 h-20 bg-soft-gray rounded-full flex items-center justify-center text-3xl cursor-pointer">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-off-black">My Profile</h1>
+                    <p class="text-gray-600">Manage your account information</p>
+                </div>
+            </div>
+
+            <!-- User Information -->
+            <div class="space-y-6 mb-8 font font-comfortaa">
+                <!-- First Name & Last Name Row -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-dark-gray mb-2">First Name</label>
+                        <input 
+                            type="text" 
+                            id="firstName"
+                            value="<%= firstName %>" 
+                            class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black font-medium focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-dark-gray mb-2">Last Name</label>
+                        <input 
+                            type="text" 
+                            id="lastName"
+                            value="<%= lastName %>" 
+                            class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black font-medium focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                        >
+                    </div>
+                </div>
+
+                <!-- Email Address -->
+                <div>
+                    <label class="block text-sm font-semibold text-dark-gray mb-2">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email"
+                        value="<%= email %>" 
+                        class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black font-medium focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                    >
+                </div>
+
+
+                 <div class="flex justify-end">
+                <button 
+                    onclick="handleSave()"
+                    class="px-4 py-2 bg-off-black text-off-white rounded-lg hover:bg-dark-gray transition-colors text-sm font-medium"
+                >
+                    Save Changes
+                </button>
+            </div>
+
+            </div>
+
+            <!-- Action Buttons -->
+            <!-- Orders Button -->
+            <div class="mb-4">
+                <button 
+                    onclick="handleOrders()"
+                    class="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-off-black text-off-white rounded-xl hover:bg-dark-gray transition-colors font-semibold"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                    </svg>
+                    <span>View Orders</span>
+                </button>
+            </div>
+
+            <!-- Change Password Button -->
+            <div class="mb-6">
+                <button 
+                    onclick="handlePasswordChange()"
+                    class="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-white text-off-black border-2 border-off-black rounded-xl hover:bg-soft-gray transition-colors font-semibold"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                    <span>Change Password</span>
+                </button>
+            </div>
+
+           
+        </div>
+
+        <!-- Success Message (Hidden by default) -->
+        <div id="successMessage" class="hidden mt-4 p-4 bg-soft-gray border border-gray-300 rounded-lg">
+            <div class="flex items-center space-x-2">
+                <svg class="w-5 h-5 text-off-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span class="text-off-black font-medium">Profile updated successfully!</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleSave() {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            
+            // Simple validation
+            if (!firstName || !lastName || !email) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Show success message
+            const successMsg = document.getElementById('successMessage');
+            successMsg.classList.remove('hidden');
+            setTimeout(() => {
+                successMsg.classList.add('hidden');
+            }, 3000);
+            
+            console.log('Saved:', { firstName, lastName, email });
+        }
+
+        function handleOrders() {
+            alert('Redirecting to orders page...');
+            // In a real app, this would navigate to orders page
+        }
+
+        function handlePasswordChange() {
+            alert('Opening password change dialog...');
+            // In a real app, this would open a password change modal or page
+        }
+
+        // Add input focus effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .focused input {
+            background-color: white !important;
+        }
+    </style>
+</body>
+</html>

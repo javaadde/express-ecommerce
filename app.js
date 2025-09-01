@@ -15,23 +15,23 @@ const PORT = process.env.PORT || 8080
 // routers ====
 import {loginRouter} from './routes/login.js'
 import {signUpRouter} from './routes/signup.js'
+import {settingsRoute} from './routes/settings.js';
+import { productRouter } from './routes/products.js';
 
+app.use('/products',productRouter);
 app.use('/login',loginRouter);
-app.use('/signup',signUpRouter)
+app.use('/signup',signUpRouter);
+app.use('/settings',settingsRoute);
 // ============
 
 
 // session data Storing ============
 app.use(session(
     {
-        secret:'my session data',
-        store: MongoStore.create(
-            {
-                mongoUrl: dbUrl,
-                collectionName: 'sessions',
-                ttl:new Date( Date.now() + 1000 * 60 * 60 * 24)
-            }
-        )
+         secret: 'your_secret_key',
+            resave: false,
+            saveUninitialized: false,
+            store: MongoStore.create({ mongoUrl: 'mongodb://localhost/MyUsers' }),
     }
 ))
 // ==================================
@@ -49,12 +49,32 @@ app.set('views', 'views')
 
 
 app.get('/',(req,res) => {
-    res.render(
-        'home2',
+   
+   if(req.session.data){
+
+     res.render(
+        'home1',
         {
             title:'home'
         }
     )
+
+   } 
+
+   else{
+     res.render(
+        'home',{
+            title:'home'
+        }
+     )
+   }
+
+   
+})
+
+app.get('/logout',(req,res)=>{
+    delete req.session.data
+    res.render('home')
 })
 
 app.use((req,res) => {
