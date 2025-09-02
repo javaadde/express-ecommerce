@@ -19,9 +19,7 @@ settingsRoute.use(session(
     }
 ))
 
-settingsRoute.get('/',(req,res) =>{
-
-    
+settingsRoute.get('/',(req,res) =>{  
     
 
     res.render('setting',
@@ -50,7 +48,7 @@ settingsRoute.post('/',async (req,res)=>{
             'info.fname':update.firstName,
             'info.lname':update.lastName, 
             'info.email':update.email,
-            'info.bio': update.bio,
+            
         },
 
         {upsert:true})

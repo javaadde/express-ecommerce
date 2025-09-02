@@ -13,7 +13,7 @@ const proSchema = new Schema({
     url:String,
 })
 
-const products = mongoose.model('products',proSchema)
+export const products = mongoose.model('products',proSchema)
 
 productRouter.get('/', async(req,res)=>{
     await mongoose.connect(dbURL)
