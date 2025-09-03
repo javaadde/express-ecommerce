@@ -18,7 +18,9 @@ import {signUpRouter} from './routes/signup.js'
 import {settingsRoute} from './routes/settings.js';
 import { productRouter } from './routes/products.js';
 import { adminRouter } from './routes/admin.js';
+import { cartRouter } from './routes/cart.js';
 
+app.use('/cart', cartRouter)
 app.use('/admin',adminRouter);
 app.use('/products',productRouter);
 app.use('/login',loginRouter);

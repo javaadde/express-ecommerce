@@ -28,12 +28,17 @@
 </head>
 
 <body class="bg-off-white min-h-screen">
+
+        <button onclick="goBack()" class="bg-dark-gray text-off-white w-10 h-10 rounded-full z-10 fixed left-5 top-4">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
     <div class="max-w-2xl mx-auto p-6">
         <!-- Profile Card -->
         <div class="bg-white rounded-xl shadow-lg border border-gray-100 p-8">
             <!-- Header -->
             <div class="flex items-center space-x-4 mb-8 font-michroma">
-                <div onclick="window.location.href='http://localhost:5000/logout'"
+                <div onclick="logout()"
                 class="w-20 h-20 bg-soft-gray rounded-full flex items-center justify-center text-3xl cursor-pointer">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 </div>
@@ -45,6 +50,19 @@
 
             <!-- User Information -->
             <div class="space-y-6 mb-8 font font-comfortaa">
+
+
+                 <div>
+                    <label class="block text-sm font-semibold text-dark-gray mb-2">Username</label>
+                    <input 
+                        type="email" 
+                        id="email"
+                        value="<%= username %>" 
+                        readonly
+                        class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black font-medium focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                    >
+                </div>
+
                 <!-- First Name & Last Name Row -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -79,20 +97,40 @@
                 </div>
 
 
-                 <div class="flex justify-end">
+
+                
+
+            <!-- Action Buttons -->
+
+             <div class="flex">
+               
+
+              <div class="flex justify-start w-1/2">
+                <button 
+                    class="font-bold underline"
+                    onclick="handleSave()">
+                     change password
+                </button>
+              </div>
+                
+
+
+              <div class="flex justify-end w-1/2">
                 <button 
                     onclick="handleSave()"
                     class="px-4 py-2 bg-off-black text-off-white rounded-lg hover:bg-dark-gray transition-colors text-sm font-medium"
                 >
                     Save Changes
                 </button>
-            </div>
+              </div>
+
+             </div>              
 
             </div>
 
-            <!-- Action Buttons -->
+           
             <!-- Orders Button -->
-            <div class="mb-4">
+            <div class="mb-4 font-comfortaa">
                 <button 
                     onclick="handleOrders()"
                     class="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-off-black text-off-white rounded-xl hover:bg-dark-gray transition-colors font-semibold"
@@ -104,18 +142,6 @@
                 </button>
             </div>
 
-            <!-- Change Password Button -->
-            <div class="mb-6">
-                <button 
-                    onclick="handlePasswordChange()"
-                    class="w-full flex items-center justify-center space-x-3 px-6 py-4 bg-white text-off-black border-2 border-off-black rounded-xl hover:bg-soft-gray transition-colors font-semibold"
-                >
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                    </svg>
-                    <span>Change Password</span>
-                </button>
-            </div>
 
            
         </div>
@@ -131,51 +157,31 @@
         </div>
     </div>
 
+     <button 
+        onclick="logout()"
+        class="fixed bottom-6 right-6 underline font-bold font-comfortaa">
+        logout
+     </button>
+
     <script>
-        function handleSave() {
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
-            const email = document.getElementById('email').value;
-            
-            // Simple validation
-            if (!firstName || !lastName || !email) {
-                alert('Please fill in all fields');
-                return;
+       
+
+       function logout(){
+          if(confirm('are sure you wanna logout')){
+            window.location.href='http://localhost:5000/logout';
+          }
+       }
+
+        function goBack() {
+            // Go back to previous page
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                alert('No previous page to go back to');
             }
-            
-            // Show success message
-            const successMsg = document.getElementById('successMessage');
-            successMsg.classList.remove('hidden');
-            setTimeout(() => {
-                successMsg.classList.add('hidden');
-            }, 3000);
-            
-            console.log('Saved:', { firstName, lastName, email });
         }
 
-        function handleOrders() {
-            alert('Redirecting to orders page...');
-            // In a real app, this would navigate to orders page
-        }
-
-        function handlePasswordChange() {
-            alert('Opening password change dialog...');
-            // In a real app, this would open a password change modal or page
-        }
-
-        // Add input focus effects
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
-                });
-                
-                input.addEventListener('blur', function() {
-                    this.parentElement.classList.remove('focused');
-                });
-            });
-        });
+       
     </script>
 
     <style>

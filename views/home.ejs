@@ -40,8 +40,8 @@
                 
                 <!-- Navigation -->
                 <nav class="hidden md:flex space-x-8">
-                    <a href="#" class="text-off-black hover:text-gray-600 px-3 py-2 text-sm font-comfortaa font-medium transition-colors duration-200">Products</a>
-                    <a href="#" class="text-off-black hover:text-gray-600 px-3 py-2 text-sm font-comfortaa font-medium transition-colors duration-200">Categories</a>
+                    <a href="http://localhost:5000/products" class="text-off-black hover:text-gray-600 px-3 py-2 text-sm font-comfortaa font-medium transition-colors duration-200">Products</a>
+                    <a href="#category" class="text-off-black hover:text-gray-600 px-3 py-2 text-sm font-comfortaa font-medium transition-colors duration-200">Categories</a>
                     <a href="#" class="text-off-black hover:text-gray-600 px-3 py-2 text-sm font-comfortaa font-medium transition-colors duration-200">Customer Support</a>
                 </nav>
                 
@@ -81,7 +81,7 @@
                 <div class="order-1 lg:order-1 justify-center lg:flex hidden">
                    
                             <img 
-                                src="https://image.hm.com/assets/hm/5a/7c/5a7c68886949dbf0d0a88ffacd5323cd7a35b5e5.jpg?imwidth=1260" 
+                                src="https://image.hm.com/assets/hm/a7/97/a7973036acc36ae6c87249e8a79afc9772a49663.jpg?imwidth=1260" 
                                 alt="Fashion Model - Monochrome Style" 
                                 class="w-80 h-96 lg:w-86 lg:h-[100%] object-cover rounded-2xl shadow-2xl"
                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
@@ -146,9 +146,12 @@
 
 
 
-    <!-- Categories Slider -->
-    <section class="py-16 bg-soft-gray">
+    <!-- Categories Bar-->
+    <section class="py-16 bg-soft-gray" id="category">
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- headding -->
             <div class="text-center mb-12">
                 <h3 class="text-3xl font-michroma font-bold text-off-black mb-4">SHOP BY CATEGORY</h3>
                 <p class="text-gray-600 font-comfortaa max-w-2xl mx-auto">Explore our carefully curated collections, each designed to elevate your wardrobe with timeless pieces.</p>
@@ -156,8 +159,10 @@
             
             <!-- Categories Grid -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 font-comfortaa">
+
                 <!-- Jackets -->
-                <div class="group cursor-pointer">
+                <div onclick="window.location.href='http://localhost:5000/products/Jackets'"
+                class="group cursor-pointer">
                     <div class="bg-off-white rounded-xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200">
                         <div class="h-62 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
                             <img 
@@ -180,7 +185,8 @@
                 </div>
                 
                 <!-- T-Shirts -->
-                <div class="group cursor-pointer">
+                <div onclick="window.location.href='http://localhost:5000/products/T-Shirts'"
+                class="group cursor-pointer">
                     <div class="bg-off-white rounded-xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200">
                         <div class="h-62 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
                             <img 
@@ -203,7 +209,8 @@
                 </div>
                 
                 <!-- Shirts -->
-                <div class="group cursor-pointer">
+                <div onclick="window.location.href='http://localhost:5000/products/Shirts'"
+                 class="group cursor-pointer">
                     <div class="bg-off-white rounded-xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200">
                         <div class="h-62 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
                             <img 
@@ -226,7 +233,8 @@
                 </div>
                 
                 <!-- Hoodies -->
-                <div class="group cursor-pointer">
+                <div onclick="window.location.href='http://localhost:5000/products/Hoodies'" 
+                 class="group cursor-pointer">
                     <div class="bg-off-white rounded-xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200">
                         <div class="h-62 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
                             <img 
@@ -249,7 +257,8 @@
                 </div>
                 
                 <!-- Jeans -->
-                <div class="group cursor-pointer">
+                <div onclick="window.location.href='http://localhost:5000/products/Jeans'"
+                class="group cursor-pointer">
                     <div class="bg-off-white rounded-xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200">
                         <div class="h-62 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
                             <img 
@@ -273,6 +282,8 @@
             </div>
         </div>
     </section>
+
+
 
     <!-- Newsletter Section -->
     <section class="py-16 bg-off-black px-4">
@@ -300,7 +311,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Company Info -->
                 <div class="md:col-span-2">
-                    <h4 class="text-2xl font-michroma font-bold mb-4">MONOCHROME</h4>
+                    <h4 class="text-2xl font-michroma font-bold mb-4">JD</h4>
                     <p class="text-gray-300 font-comfortaa mb-6 max-w-md">
                         Redefining fashion through minimalist design and premium quality. Every piece tells a story of craftsmanship and timeless appeal.
                     </p>

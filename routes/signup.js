@@ -7,12 +7,15 @@ import session from 'express-session'
 import bcrypt from 'bcrypt'
 import MongoStore from 'connect-mongo'
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 signUpRouter.use(express.json())
 signUpRouter.use(express.urlencoded({extended:true}))
 signUpRouter.use(session(
        {
-              secret: 'your_secret_key',
+                 secret: 'your_secret_key',
                  resave: false,
                  saveUninitialized: false,
                  store: MongoStore.create({ mongoUrl: 'mongodb://localhost/MyUsers' })
@@ -22,7 +25,7 @@ signUpRouter.use(session(
 
 
 // ==============================================================
-export const dbURL = 'mongodb://localhost:27017/MyUsers'
+export const dbURL = process.env.dbURL
 
 export const mySchema = mongoose.Schema({
      _id:String,
@@ -36,8 +39,14 @@ export const mySchema = mongoose.Schema({
 })
 
 export const users = mongoose.model('users',mySchema)
-// ==============================================================
 
+
+// _____________________________________________________________
+
+import { cartSchema,carts } from './cart.js';
+
+// ==============================================================
+// ==============================================================
 
 
 signUpRouter.get('/',(req,res) => {
@@ -83,7 +92,12 @@ signUpRouter.post('/',userValidationRules ,chekValResult, async (req,res) => {
       
       
       try{
-           await users.insertOne(doc)
+
+          await users.insertOne(doc);
+          await carts.insertOne({
+               _id:doc._id,
+               iterm:[],
+          });
 
           req.session.data = {
                username:doc._id,
@@ -94,7 +108,6 @@ signUpRouter.post('/',userValidationRules ,chekValResult, async (req,res) => {
           }
           
           console.log('inserted');
-
           res.render('home1')
           
 

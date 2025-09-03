@@ -120,11 +120,19 @@ adminRouter.put('/products/update',async(req,res)=>{
 
 
 function checkAdmin(req,res,next){
+
+    try{
+
     if(req.session.data.role === 'admin'){
       return next()
     }
 
     res.render('404')
+
+    }
+    catch(err){
+        res.render('404')
+    }
 }
 
 

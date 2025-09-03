@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma:wght@400&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#fafafa',
+                        'off-black': '#1a1a1a',
+                        'soft-gray': '#f5f5f5',
+                        'dark-gray': '#2a2a2a'
+                    },
+                     fontFamily: {
+                        'michroma': ['Michroma', 'sans-serif'],
+                        'comfortaa': ['Comfortaa', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-off-white min-h-screen">
+
+     <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 font-michroma">
+        <div class="max-w-7xl mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-off-black rounded-lg flex items-center justify-center">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Cart base -->
+                            <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V16.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            
+                            <!-- Cart wheels -->
+                            <circle cx="9" cy="20" r="1" fill="white"/>
+                            <circle cx="20" cy="20" r="1" fill="white"/>
+                            </svg>
+                    </div>
+                    <h1 class="text-2xl font-bold text-off-black font-michroma">Shoping Cart</h1>
+                </div>
+                <button onclick="window.location.href='http://localhost:5000/settings'" class="text-dark-gray hover:text-off-black text-3xl">
+                 <i class="fa-solid fa-circle-user"></i> 
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="mx-auto p-6 font-comfortaa w-full">
+    
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+
+            <!-- Cart Items -->
+            <div class="lg:col-span-2 w-full">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100">
+                    <!-- Cart Items Header -->
+                    <div class="p-6 border-b border-gray-100">
+                        <h2 class="text-xl font-semibold text-off-black">Cart Items</h2>
+                        <p id="itemCount" class="text-sm text-dark-gray mt-1"><%= items.length %> items in your cart</p>
+                    </div>
+
+                    <!-- Cart Items List -->
+                    <div id="cartItems" class="divide-y divide-gray-100">
+                        <!-- Items will be populated here -->
+                    </div>
+
+                    <% if(items.length === 0){ %>
+
+                    <!-- Empty Cart State -->
+                    <div id="emptyCart" class=" p-12 text-center">
+                        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5.4a1 1 0 001 1.2h9.2a1 1 0 001-1.2L15.5 8M7 13v8a2 2 0 002 2h6a2 2 0 002-2v-8"></path>
+                        </svg>
+                        <h3 class="text-lg font-medium text-gray-500 mb-2">Your cart is empty</h3>
+                        <p class="text-gray-400 mb-4">Add some products to get started</p>
+                        <button onclick="continueShopping()" class="px-6 py-3 bg-off-black text-off-white rounded-lg hover:bg-dark-gray transition-colors font-medium">
+                            Continue Shopping
+                        </button>
+                    </div>
+
+                    <% }else{ %>
+
+                        <% items.forEach((item) =>{ %>
+                        <% subtotal = subtotal + item.price * item.quantity; %>
+                        
+                       
+                    <!-- none empty stage -->
+                  <div class="p-6 flex items-center space-x-4 border-[1px] rounded-b-md">
+
+                        <img src="<%= item.url %>" 
+                        alt="" 
+                        class="w-[25vh] h-45 rounded-lg object-cover bg-soft-gray">
+                        
+                        <div class="flex-1 pl-12">
+                            <h3 class="text-lg font-semibold text-off-black mb-1"><%= item.name %></h3>
+                            <p class="text-dark-gray text-sm"><%= item.price%></p>
+                        </div>
+
+                        <div class="flex items-center space-x-3">
+                            <!-- Quantity Controls -->
+                            <div class="flex items-center space-x-2 bg-soft-gray rounded-lg">
+                                <button 
+                                    value="<%= item.product_id %>"
+                                    onclick="decreaseQty(this.value,this.parentNode)"
+                                    class="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                                >
+                                    <svg class="w-4 h-4 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                                    </svg>
+                                </button>
+
+                                <span class="px-3 py-1 text-off-black font-medium min-w-[2rem] text-center"><%= item.quantity %></span>
+
+                                <button 
+                                    value="<%= item.product_id %>"
+                                    onclick="increaseQty(this.value)"
+                                    class="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                                >
+                                    <svg class="w-4 h-4 text-dark-gray" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- Item Total -->
+                            <div class="text-right min-w-[4rem]">
+                                <p class="text-lg font-semibold text-off-black"><%= item.price * item.quantity %></p>
+                            </div>
+
+                            <!-- Remove Button -->
+                            <button 
+                                onclick="deleteItem(this.value)"
+                                class="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                                title="delete cart item"
+                                value="<%= item.product_id %>"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+
+  
+                 <% }) %>
+                 <% } %>
+
+
+                </div>
+            </div>
+
+
+            <!-- Order Summary -->
+            <div class="lg:col-span-1 w-fulld">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-6">
+                    <h2 class="text-xl font-semibold text-off-black mb-6">Order Summary</h2>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div class="flex justify-between text-dark-gray">
+                            <span>Subtotal</span>
+                            <span id="subtotal">$<%= subtotal %></span>
+                        </div>
+                        <div class="flex justify-between text-dark-gray">
+                            <span>Shipping</span>
+                            <span id="shipping">$5.99</span>
+                        </div>
+                        <div class="flex justify-between text-dark-gray">
+                            <span>Tax</span>
+                            <span id="tax">$0.00</span>
+                        </div>
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex justify-between text-lg font-bold text-off-black">
+                                <span>Total</span>
+                                <span id="total">$<%= subtotal + 5.99 %></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Button -->
+                    <button 
+                        onclick="proceedToCheckout()"
+                        id="checkoutBtn"
+                        class="w-full px-6 py-4 bg-off-black text-off-white rounded-xl hover:bg-dark-gray transition-colors font-semibold text-lg mb-4"
+                    >
+                        Proceed to Checkout
+                    </button>
+
+                    <!-- Continue Shopping -->
+                    <button 
+                        onclick="continueShopping()"
+                        class="w-full px-6 py-3 bg-white text-off-black border-2 border-off-black rounded-xl hover:bg-soft-gray transition-colors font-medium"
+                    >
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+   
+
+
+        function continueShopping(){
+            window.location.href='http://localhost:5000/products';
+        }
+
+        function deleteItem(product_id){
+           
+            fetch(`http://localhost:5000/cart/delete/${product_id}`,{
+                method:'DELETE',
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            .then( async(res)=>{
+                const data = await res.json()
+                showNotification(data.message)
+                setTimeout( ()=> {
+                    location.reload()
+                },1200)
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+        }
+
+
+        function increaseQty(pro_id){
+
+            fetch('http://localhost:5000/cart/quantity/increase',{
+                method:'PATCH',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    product_id:pro_id
+                }),
+            })
+            .then( async(res)=>{
+                const data = await res.json()
+                showNotification(data.message)
+                setTimeout( ()=>{
+                   location.reload()
+                },1200)
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+
+        }
+
+        function decreaseQty(pro_id,node){
+
+            const currentQty = parseInt(node.children[1].innerText)
+
+            if(currentQty <= 1){
+                showNotification("you can't do that")
+            }
+            else{
+
+                 fetch('http://localhost:5000/cart/quantity/decrease',{
+                method:'PATCH',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    product_id:pro_id
+                }),
+            })
+            .then( async(res)=>{
+                const data = await res.json()
+                showNotification(data.message)
+                setTimeout( ()=>{
+                   location.reload()
+                },1200)
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+
+            }
+        
+
+
+        }
+
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-off-black text-off-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform translate-x-full';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 2 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 2000);
+        }
+
+       
+
+
+    </script>
+</body>
+</html>

@@ -21,12 +21,15 @@ settingsRoute.use(session(
 
 settingsRoute.get('/',(req,res) =>{  
     
+    console.log(req.session.data);
+    
 
     res.render('setting',
         {
             firstName:req.session.data.firstName,
             lastName:req.session.data.lastName,
             email:req.session.data.email,
+            username:req.session.data.username
 
         }
     )

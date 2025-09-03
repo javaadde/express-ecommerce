@@ -29,23 +29,31 @@
 <body>
     
 
-    <section class="py-16 bg-soft-gray min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h3 class="text-3xl font-michroma font-bold text-off-black mb-4">SHOP YOR FAVORITE</h3>
-                <p class="text-gray-600 font-comfortaa max-w-2xl mx-auto">Explore our carefully curated collections, each designed to elevate your wardrobe with timeless pieces.</p>
-            </div>
+    <section class="pb-16 pt-8 bg-soft-gray min-h-screen">
+
+        <button onclick="goBack()" class="bg-dark-gray text-off-white w-10 h-10 rounded-full z-10 absolute left-5">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+
+        <button onclick="window.location.href='http://localhost:5000/cart'" 
+        class="bg-dark-gray text-off-white w-10 h-10 rounded-full z-10 absolute right-5">
+            <i class="fa-solid fa-cart-shopping"></i>
+        </button>
+        
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
             
-            <!--  Grid -->
-
-
+            <div class="text-center mb-8">
+                <h3 class="text-3xl font-michroma font-bold text-off-black mb-4">SHOP YOR FAVORITE</h3>
+                <!-- <p class="text-gray-600 font-comfortaa max-w-2xl mx-auto">Explore our carefully curated collections, each designed to elevate your wardrobe with timeless pieces.</p> -->
+            </div>
 
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 font-comfortaa">
 
 
                 <% products.forEach((pro)=> { %>
                 
-                <div class="group cursor-pointer">
+                <div class="group cursor-pointer mt-4 z-0">
                     <div class="bg-off-white rounded-xl overflow-hidden hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border border-gray-200">
                         <div class="h-66 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center relative overflow-hidden">
                             <img 
@@ -63,12 +71,15 @@
                         <div class="p-4 text-center border-t flex flex-col gap-4 w-full min-h-[25vh]">
                             <div>
                                 <h4 class="font-comfortaa font-semibold text-off-black mb-1"><%= pro.name %></h4>
-                                <p class="text-sm text-gray-500 font-comfortaa">Premium outerwear</p>
+                                <p class="text-sm text-gray-500 font-comfortaa"><%= pro._id %></p>
                             </div>
 
                             <div class="flex flex-row w-full justify-between px-3 mt-auto py-3">
                                 <span>$<%= pro.price %></span>
-                                <button class="hover:text-blue-500">
+                                <button 
+                                 value="<%= pro._id %>"
+                                 onclick="addToCart(this.value)"
+                                 class="hover:text-blue-500 text-2xl">
                                     <i class="fa-solid fa-cart-plus"></i>
                                 </button>
                             </div>
@@ -76,12 +87,69 @@
                     </div>
                 </div>
                 
-          <% }) %>
+                <% }) %>
    
             </div>
+
         </div>
+
     </section>
 
+    <script>
+         function goBack() {
+            // Go back to previous page
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                alert('No previous page to go back to');
+            }
+        }
+
+        function addToCart(product_id){
+            
+             console.log(product_id);
+            
+             fetch(`http://localhost:5000/products/addtocart/${product_id}`,{
+                method:'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                 },
+             })
+             .then( async(response)=>{
+                  const data = await response.json()
+                 
+                  showNotification(data.message); 
+             })
+             .catch( (err)=>{
+                console.error(err);
+             })
+        }
+
+
+         function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-off-black text-off-white px-6 py-3 rounded-lg shadow-lg z-50 transition-all transform translate-x-full';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Remove after 2 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 2000);
+        }
+
+
+    </script>
 
 </body>
 </html>
