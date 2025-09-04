@@ -123,7 +123,7 @@
         </div>
 
 
-        
+
         <!-- Products List -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-500">
             <div class="p-6 border-b border-gray-100 text-center">
@@ -428,7 +428,9 @@
 
 
         // Close modal when clicking outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener("click", (e) => {
+            console.log('outside');
+            
             const modal = document.getElementById('editModal');
             if (e.target === modal) {
                 document.getElementById('editModal').classList.add('hidden');
