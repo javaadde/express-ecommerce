@@ -11,6 +11,20 @@ import dotenv from 'dotenv'
 dotenv.config();
 const PORT = process.env.PORT || 8080
 
+// path
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+
+// template setting and view setting =================
+
+app.set('view engine', 'ejs')
+app.set('views', 'views')
+
 
 // routers ====
 import {loginRouter} from './routes/login.js'
@@ -19,7 +33,9 @@ import {settingsRoute} from './routes/settings.js';
 import { productRouter } from './routes/products.js';
 import { adminRouter } from './routes/admin.js';
 import { cartRouter } from './routes/cart.js';
+import { ordersRouter} from './routes/orders.js';
 
+app.use('/orders', ordersRouter);
 app.use('/cart', cartRouter)
 app.use('/admin',adminRouter);
 app.use('/products',productRouter);
@@ -40,13 +56,6 @@ app.use(session(
 ))
 // ==================================
 
-
-// template setting and view setting =================
-
-app.set('view engine', 'ejs')
-app.set('views', 'views')
-
-// =================================================== 
 
 
 // error handle

@@ -7,6 +7,7 @@ dotenv.config();
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import mongoose, { model } from 'mongoose';
+import { body } from 'express-validator';
 
 cartRouter.use(express.json())
 cartRouter.use(express.urlencoded({extended:true}))
@@ -21,8 +22,8 @@ cartRouter.use(session(
 ))
 
 // ============================================================================================================
-// ============================================================================================================
 // ======================================[ CArt Schema]========================================================
+// ============================================================================================================
 
 const dbURL = process.env.dbURL;
 
@@ -55,9 +56,14 @@ cartRouter.get('/',async(req,res)=>{
     })
 })
 
+
+
 // ===========================================================
 // =====================[deleting cart items]=================
 // ===========================================================
+
+
+
 
 cartRouter.delete('/delete/:id', async(req,res)=>{
     const product_id = req.params.id
@@ -93,6 +99,7 @@ cartRouter.delete('/delete/:id', async(req,res)=>{
 // ========================================================================
 // =====================[increase and decrease cart items]=================
 // ========================================================================
+
 
 
 cartRouter.patch('/quantity/:operation', async(req,res)=> {
@@ -142,3 +149,95 @@ cartRouter.patch('/quantity/:operation', async(req,res)=> {
     }
 })
 
+
+
+
+// ========================================================================
+// ===========================[ placing order ]============================
+// ========================================================================
+
+
+
+// ======================================[ order Schema ]========================================================
+
+  const orderSchema =  mongoose.Schema({
+      user_id:String,
+      items:Array,
+      total:Number,
+      status:{type:String, default:'Placed'},
+      date:{type:Date, default:Date.now},
+      address:Object,
+  })
+
+export  const orders = mongoose.model('orders',orderSchema);
+
+// ============================================================================================================
+
+
+
+cartRouter.post('/order', async(req,res) => {
+
+console.log('request came in');
+
+   try{
+    
+   await mongoose.connect(dbURL);
+
+   const subtotal =  req.body.total
+   const address =  req.body.address
+   const user_id =  req.session.data.username
+
+   // finding the user's cart taking the subtotal and items
+
+   const cartData = await carts.findOne({_id:user_id});
+   console.log(cartData);
+   
+   // storing order data 
+
+   const inserted = await orders.insertOne({
+     user_id:user_id,
+     items:cartData.items,
+     total:subtotal,
+     address:address,
+   })
+
+   console.log('inserted',inserted);
+
+   res.json({
+     message:'inserted sucessfully'
+   })
+
+  }
+
+  catch(err){
+    console.error(err);
+  }
+   
+   
+  
+})
+
+
+// ======================================[ cart clearing ]========================================================
+
+cartRouter.patch('/clear', async(req,res) =>{
+   const user_id = req.session.data.username
+   
+   try{
+    await mongoose.connect(dbURL);
+
+    const updated = await carts.updateOne({_id:user_id}, {$unset:{items:""}});
+
+    // console.log('cart cleared', updated);
+
+    res.json({
+        message:'cart is cleared'
+    })
+    
+
+   }
+   catch(err){
+    console.log(err);
+    
+   }
+})

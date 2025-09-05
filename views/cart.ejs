@@ -265,46 +265,164 @@
 
 
     <!-- first modal -->
-    <div class="fixed w-1/2 top-20 left-[25%] hidden" id="paymentDiv">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-6  ">
-                    <h2 class="text-xl font-semibold text-off-black mb-6">Order Summary</h2>
+    
+    <section class="hidden absolute left-auto lg:left-[10%] xl:left-[20%] top-0  items-center justify-center p-9 font-comfortaa" id="paymentDiv">
+
+        
+
+         <!-- Delivery Form -->
+            <div class="lg:col-span-2">
+                <button onclick="proceedCancel()" class="absolute text-2xl right-12 top-12 w-10 h-10 rounded-full bg-black text-white">x</button>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h2 class="text-xl font-semibold text-off-black mb-6">Shipping Information</h2>
                     
-                    <div class="space-y-4 mb-6">
-                      
-                        <div class="flex justify-between text-dark-gray">
-                            <span>Shipping</span>
-                            <span id="shipping">$5.99</span>
-                        </div>
+                    <form id="deliveryForm" class="space-y-6" value="<%= subtotal %>">
                        
-                        <div class="border-t border-gray-200 pt-4">
-                            <div class="flex justify-between text-lg font-bold text-off-black">
-                                <span>Total</span>
-                                <span id="total">$<%= subtotal + 5.99 %></span>
+                        <!-- Name & Phone Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                           <div>
+                            <label class="block text-sm font-semibold text-dark-gray mb-2">Full Name</label>
+                            <input 
+                                type="text" 
+                                name="name"
+                                placeholder="Full name"
+                                class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                                required
+                            >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-dark-gray mb-2">Phone Number</label>
+                                <input 
+                                    type="tel" 
+                                    name="phone"
+                                    placeholder="+1 (555) 123-4567"
+                                    class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                                    required
+                                >
                             </div>
                         </div>
 
-                    </div>
+                        <!-- Street Address -->
+                        <div>
+                            <label class="block text-sm font-semibold text-dark-gray mb-2">Street Address</label>
+                            <input 
+                                type="text" 
+                                name="streetAddress"
+                                placeholder="123 Main Street"
+                                class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                                required
+                            >
+                        </div>
 
-                    <!-- Checkout Button -->
-                    <button 
-                      onclick="proceedCancel()"
-                      id="checkoutBtn"
-                      class="w-full h-12 flex items-center justify-center py-4 bg-off-white text-off-black border-2 border-off-black rounded-xl  transition-colors font-semibold text-lg mb-4"
-                  >
-                      Cancel
-                  </button>
+                        <!-- Apartment/Unit (Optional) -->
+                        <div>
+                            <label class="block text-sm font-semibold text-dark-gray mb-2">Apartment, Suite, Unit (Optional)</label>
+                            <input 
+                                type="text" 
+                                name="apartment"
+                                placeholder="Apt 4B, Suite 100, Unit 5, etc."
+                                class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                            >
+                        </div>
 
-                    <button 
-                        onclick="proceedToPay()"
-                        id="checkoutBtn"
-                        class="w-full px-6 py-4 bg-off-black text-off-white rounded-xl hover:bg-dark-gray transition-colors font-semibold text-lg mb-4"
-                    >
-                        Proceed to Pay
-                    </button>
+                        <!-- City, State, ZIP Row -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-dark-gray mb-2">City</label>
+                                <input 
+                                    type="text" 
+                                    name="city"
+                                    placeholder="Mumbai"
+                                    class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                                    required
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-dark-gray mb-2">State</label>
+                                <select 
+                                    name="state"
+                                    class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                                    required
+                                >
+                                    <option value="">Select State</option>
+                                    <option value="NY">Kerala</option>
+                                    <option value="CA">Mumbai</option>
+                                    <option value="TX">Panjab</option>
+                                    <option value="FL">Goa</option>
+                                    <option value="IL">Delhi</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-dark-gray mb-2">Pin Code</label>
+                                <input 
+                                    type="text" 
+                                    name="pinCode"
+                                    placeholder="676122"
+                                    class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Country -->
+                        <div>
+                            <label class="block text-sm font-semibold text-dark-gray mb-2">Country</label>
+                            <input 
+                                readonly
+                                value="india"
+                                placeholder="India"
+                                name="country"
+                                class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all"
+                                required
+                            >
+                        </div>
+
+                        <!-- Delivery Instructions -->
+                        <div>
+                            <label class="block text-sm font-semibold text-dark-gray mb-2">Delivery Instructions (Optional)</label>
+                            <textarea 
+                                name="deliveryInstructions"
+                                placeholder="Leave at front door, Ring doorbell, Call upon arrival, etc."
+                                rows="3"
+                                class="w-full px-4 py-3 bg-soft-gray border-2 border-transparent rounded-lg text-off-black focus:outline-none focus:border-off-black focus:bg-white transition-all resize-none"
+                            ></textarea>
+                        </div>
+
+                     <!--  Payment -->
+                            <div class="lg:col-span-1">
+                                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-6">
+                                    <h2 class="text-xl font-semibold text-off-black mb-6">Payment</h2>
 
 
+                                    <!-- Payment Button -->
+                                    <input
+                                        id="submitBtn"
+                                        onsubmit=""
+                                        type="submit"
+                                        value="pay"
+                                        class="cursor-pointer w-full px-6 py-4 bg-off-black text-off-white rounded-xl hover:bg-dark-gray transition-colors font-semibold text-lg mb-4 flex items-center justify-center space-x-2"
+                                    >
+                                    
+
+                                    <!-- Security Note -->
+                                    <div class="text-xs text-center text-dark-gray">
+                                        <div class="flex items-center justify-center space-x-1 mb-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                            </svg>
+                                            <span>Secure Payment</span>
+                                        </div>
+                                        <p>Your payment information is encrypted and secure</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </form>
                 </div>
-     </div>
+            </div>
+
+    </section>
+
 
      <!-- second modal -->    
     <div id="modalOverlay" class="fixed inset-0 bg-black bg-opacity-50 modal-backdrop hidden flex items-center justify-center z-50">
@@ -488,18 +606,26 @@
         }
 
 
-        function proceedToPay(){
+        function proceedToPay(subtotal,formData){
           const popup =  document.getElementById('paymentDiv')
           popup.classList.add('hidden');
 
            document.getElementById('container').style.opacity = '1'
            document.querySelector("header").style.opacity = '1'
 
-           placeOrder();
-           Notify();
-           clearCart();
+           placeOrder(subtotal,formData);
 
         }
+
+        document.getElementById('deliveryForm').addEventListener("submit",(e)=>{
+            e.preventDefault()
+            const subtotal = this.value
+            const formData = new FormData(e.target)
+            const data = Object.fromEntries(formData.entries());
+            console.log(data);
+            proceedToPay(subtotal,data);
+            
+        })
 
         function proceedCancel(){
               const popup =  document.getElementById('paymentDiv')
@@ -534,12 +660,60 @@
 
         }
 
+        function placeOrder(subtotal,formData){
 
-        function placeOrder(){
-             
+            try{
+
+             fetch('http://localhost:5000/cart/order',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify({
+                   total:subtotal,
+                   address:formData
+                })
+             })
+             .then( async(res) => {
+                const data = await res.json()
+                console.log(data.message);
+        
+                Notify();
+                clearCart();
+
+             })
+             .catch((err)=>{
+                console.log(err);
+             })
+
+
+
+            }
+            catch(err){
+                console.log(err)
+            }
+            
         }
 
         function clearCart(){
+            try{
+            fetch('http://localhost:5000/cart/clear',{
+                method:'PATCH',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+             })
+             .then( async(res) => {
+                const data = await res.json()
+                console.log(data.message);
+             })
+             .catch((err)=>{
+                console.log(err);
+             })
+            }
+            catch(err){
+                console.log(err)
+            }
 
         }
 

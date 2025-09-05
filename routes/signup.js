@@ -25,7 +25,7 @@ signUpRouter.use(session(
 
 
 // ==============================================================
-export const dbURL = process.env.dbURL
+const dbURL = process.env.dbURL
 
 export const mySchema = mongoose.Schema({
      _id:String,
@@ -51,7 +51,6 @@ import { cartSchema,carts } from './cart.js';
 
 signUpRouter.get('/',(req,res) => {
      res.render('signUp')
-
 })
 
 

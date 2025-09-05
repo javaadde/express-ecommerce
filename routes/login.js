@@ -9,9 +9,11 @@ import MongoStore from 'connect-mongo'
 
 
 // importing mongoose url and schema
-import {dbURL , mySchema, users} from './signup.js'
-import { render } from 'ejs'
-
+import {mySchema, users} from './signup.js'
+// db uri
+import dotenv from 'dotenv';
+dotenv.config()
+const dbURL = process.env.dbURL
 
 loginRouter.use(express.json())
 loginRouter.use(express.urlencoded({extended:true}))

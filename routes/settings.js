@@ -3,9 +3,13 @@ export const settingsRoute = express.Router()
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
-// importing mongoose url and schema
-import {dbURL , mySchema, users} from './signup.js'
+// importing mongoose and schema
+import { mySchema, users} from './signup.js'
 import mongoose from 'mongoose';
+// db uri
+import dotenv from 'dotenv';
+dotenv.config()
+const dbURL = process.env.dbURL
 
 
 settingsRoute.use(express.json());

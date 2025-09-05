@@ -136,3 +136,22 @@ function checkAdmin(req,res,next){
 }
 
 
+//  importing orders collection 
+import { orders } from './cart.js'
+
+adminRouter.get('/orders/:username', async(req,res)=>{
+     const user_id = req.params.username;
+    try{
+       
+            await mongoose.connect(dbURL )
+            const orderArray = await orders.find({user_id:user_id})
+            res.render('orders',{
+                orders:orderArray,
+            })
+        }
+        catch(err){
+          console.log(err);
+        }
+})
+
+

@@ -17,9 +17,14 @@ productRouter.use(session(
        }
 ))
 
-// importing mongoose url and schema
+// db uri
+import dotenv from 'dotenv';
+dotenv.config()
+const dbURL = process.env.dbURL
 
-import {dbURL , users} from './signup.js'
+// schemas
+
+import {users} from './signup.js'
 const proSchema = new Schema({
     _id:String,
     name:String,

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma:wght@400&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#fafafa',
+                        'off-black': '#1a1a1a',
+                        'soft-gray': '#f5f5f5',
+                        'dark-gray': '#2a2a2a'
+                    },
+                     fontFamily: {
+                        'michroma': ['Michroma', 'sans-serif'],
+                        'comfortaa': ['Comfortaa', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body >
+
+   
+    <!-- Modal Header -->
+    <div class="p-6 flex items-center font-michroma">
+        <div>
+            <h2 class="text-2xl font-bold text-off-black" id="modalOrderNumber">Order #<%= details.user_id %>-01</h2>
+            <p class="text-dark-gray" id="modalOrderDate"> <%= details.date.toLocaleString() %></p>
+        </div>
+       
+    </div>
+
+    
+    <section class="font-comfortaa">
+
+
+      <div class="bg-white rounded-xl shadow-xl w-full">
+
+            <!-- Modal Content -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 gap-8">
+
+
+                    <% details.items.forEach((item)=> { %>
+
+                    <!-- Order Items -->
+                    <div class="p-8 ">
+                        <h3 class="text-lg font-semibold text-off-black mb-4">Order Item <%= details.items.indexOf(item)+1 %></h3>
+                        <div id="modalOrderItems" class="space-y-4">
+                            <!-- Items will be populated here -->
+
+                            <div class="flex items-center space-x-4 p-4 bg-soft-gray rounded-lg flex-col md:flex-row">
+                                <img src="<%= item.url %>" alt="<%= item.name %>" class="w-26 h-36 rounded-lg object-cover">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-off-black"><%=item.name%></h4>
+                                    <p class="text-dark-gray text-sm"><%= item.price %> &nbsp; x &nbsp; <%= item.quantity %></p>
+                                </div>
+                                <div class="text-right pr-5">
+                                    <p class="font-semibold text-off-black">Subtotal : &nbsp; <%= item.price * item.quantity %></p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <% }) %>
+
+                    <!-- Order Summary & Details -->
+                    <div class="lg:col-span-1 space-y-6 p-5">
+                        <!-- Order Summary -->
+                        <div class="bg-soft-gray rounded-xl p-4 px-8">
+                            <h3 class="text-lg font-semibold text-off-black mb-4">Order Summary</h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-dark-gray">Subtotal</span>
+                                    <span id="modalSubtotal" class="text-off-black"><%= details.total - 5.99 %></span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-dark-gray">Shipping</span>
+                                    <span id="modalShipping" class="text-off-black">$5.99</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-dark-gray">Tax</span>
+                                    <span id="modalTax" class="text-off-black">$0.00</span>
+                                </div>
+                                <div class="border-t border-gray-300 pt-2 mt-2">
+                                    <div class="flex justify-between font-semibold">
+                                        <span class="text-off-black">Total</span>
+                                        <span id="modalTotal" class="text-off-black"><%= details.total %></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <div class="bg-soft-gray rounded-xl p-4 px-8">
+                            <h3 class="text-lg font-semibold text-off-black mb-4">Shipping Address</h3>
+                            <div id="modalShippingAddress" class="text-sm text-dark-gray">
+                                <% for (key in details.address) { %>
+                                   <p><span class="font-bold"> <%= key %>: </span> &nbsp; <%= details.address[key] %></p>
+                                <% } %>    
+                            </div>
+                        </div>
+
+                        <!-- Order Status -->
+                        <div class="bg-soft-gray rounded-xl p-4 px-8">
+                            <h3 class="text-lg font-semibold text-off-black mb-4">Order Status</h3>
+                            <div id="modalOrderStatus">
+                               <%= details.status %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-6 border-t-[2px] border-gray-100 flex justify-center space-x-3">
+                <button onclick="trackOrder()" class="px-6 py-2 bg-off-black text-off-white rounded-lg hover:bg-dark-gray transition-colors font-medium">
+                    Track Order
+                </button>
+            </div>
+
+             <div class="p-6  border-gray-100 flex justify-end space-x-3">
+                <button onclick="cancelOrder()" class="px-6 py-2 hover:bg-dark-gray font-xl underline font-bold">
+                    Cancel Order
+                </button>
+            </div>
+
+
+
+    </section>    
+
+</body>
