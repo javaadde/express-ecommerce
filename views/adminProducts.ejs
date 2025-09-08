@@ -44,6 +44,7 @@
         </div>
     </header>
 
+
     <div class="max-w-7xl mx-auto p-6 font-comfortaa">
         <!-- Add New Product Section -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
@@ -123,10 +124,66 @@
         </div>
 
 
+        <!-- Search BAr -->
+
+        <div>
+
+        <div class="font-comfortaa font-bold text-2xl mt-20 p-5">
+            <h1> Search by id or category :</h1>
+        </div>
+
+        <div class="flex gap-6 p-[2%]">
+            <div 
+             class="w-[50%] bg-white rounded-xl shadow-sm border-[1px] border-gray-800 p-6 mb-8 flex flex-row justify-between items-center py-8 px-20 ">
+             
+                <label for="">Product Id</label>
+                <input 
+                id="pro_id" 
+                class="px-4 py-2 rounded-full border-2 border-off-black ml-5 " 
+                type="text" 
+                placeholder="type the product_id"
+                value="<%= id %>" >
+                <button 
+                onclick="SearchId()"
+                class="w-11 h-11 rounded-full border-2 border-off-black text-off-black">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+
+
+            <div
+            class="w-[45%] bg-white rounded-xl shadow-sm border-[1px] border-gray-800 p-6 mb-8 flex flex-row gap-4 py-8 justify-center px-20 ">
+             
+                <select id="category"  name="<%= category %>"
+                class="p-2 px-6 rounded-full border-off-black border-2" 
+                >
+                <option id="null" value="null" >Category</option>
+                <option id="all" value="all" >All</option>
+                <option id="Jeans" value="Jeans">Jeans</option>
+                <option id="Jackets" value="Jackets">Jackets</option>
+                <option id="Shirts" value="Shirts">Shirts</option>
+                <option id="T-Shirts" value="T-Shirts">T-Shirts</option>
+                <option id="Hoodies" value="Hoodies"></option>Hoodies</option>
+                </select>
+
+                 <button 
+                onclick="SearchCategory()"
+                class="w-11 h-11 rounded-full border-2 border-off-black text-off-black">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            
+            </div>
+
+        </div>
+
+        </div>
+
+
 
         <!-- Products List -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-500">
-            <div class="p-6 border-b border-gray-100 text-center">
+            <div class="p-6 border-b border-gray-100 text-center font-michroma">
                 <h2 class="text-4xl font-bold text-off-black">Products</h2>
             </div>
             
@@ -134,12 +191,12 @@
                 <table class="w-full">
                     <thead class="bg-soft-gray">
                         <tr>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-dark-gray">Product ID</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-dark-gray">Image</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-dark-gray">Name</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-dark-gray">Price</th>
-                            <th class="px-6 py-4 text-left text-sm font-semibold text-dark-gray">Category</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-dark-gray">Actions</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-dark-gray">Product ID</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-dark-gray">Image</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-dark-gray">Name</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-dark-gray">Price</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-dark-gray">Category</th>
+                            <th class="px-6 py-4 text-center text-sm font-bold text-dark-gray">Actions</th>
                         </tr>
                     </thead>
 
@@ -242,6 +299,32 @@
     <script>
 
 
+    //    search   
+        function SearchCategory(){
+
+            
+            let category = document.getElementById('category').value || undefined
+
+            if( category === 'null' || category === undefined){
+              return  alert('please enter the value')
+            }
+            
+            window.location.href=`http://localhost:5000/admin/products/?category=${category}`
+        
+        }
+
+          function SearchId(){
+            
+            let id = document.getElementById('pro_id').value || undefined
+
+            if(id === '' || id === undefined ){
+              return  alert('please enter the value')
+            }
+            
+            window.location.href=`http://localhost:5000/admin/products/?id=${id}`
+        
+        }
+
 
 
     //    update products
@@ -292,6 +375,7 @@
         }
              
         })
+
     //    buttom calling to open modal    
         function editProduct(button) {
 
@@ -441,7 +525,11 @@
             document.getElementById('editModal').classList.add('hidden');
         })
 
-
+        const id = document.getElementById('category').name;
+        console.log(id);
+        document.getElementById(id).selected = true;
+ 
+        
     </script>
 
 </body>

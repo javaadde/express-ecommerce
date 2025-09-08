@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma:wght@400&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#fafafa',
+                        'off-black': '#1a1a1a',
+                        'soft-gray': '#f5f5f5',
+                        'dark-gray': '#2a2a2a'
+                    },
+                     fontFamily: {
+                        'michroma': ['Michroma', 'sans-serif'],
+                        'comfortaa': ['Comfortaa', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+<body>
+
+    <div class="bg-off-white w-full min-h-screen flex flex-col items-center py-8">
+
+         <div class="font-comfortaa">
+            <input 
+            type="text" 
+            id="username"
+            placeholder="username"
+            value="<%= username %>" 
+            class="p-2 rounded border-2 border-off-black" 
+            required>
+
+            <button 
+            onclick="seeOrders()"
+            class="bg-off-black text-off-white p-2 rounded border-2 border-off-black">
+                 See all Orders
+            </button>
+         </div>
+
+    </div>
+
+
+    
+
+    <script>
+
+
+        function seeOrders(){
+            const id = document.getElementById('username').value
+            window.location.href=`http://localhost:5000/admin/orders/${id}`
+        }
+
+     
+        
+    </script>
+    
+</body>
+</html>

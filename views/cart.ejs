@@ -234,7 +234,7 @@
                         <div class="border-t border-gray-200 pt-4">
                             <div class="flex justify-between text-lg font-bold text-off-black">
                                 <span>Total</span>
-                                <span id="total">$<%= subtotal + 5.99 %></span>
+                               <span> $ <span id="total"><%= subtotal + 5.99 %></span> </span>
                             </div>
                         </div>
                     </div>
@@ -276,7 +276,7 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                     <h2 class="text-xl font-semibold text-off-black mb-6">Shipping Information</h2>
                     
-                    <form id="deliveryForm" class="space-y-6" value="<%= subtotal %>">
+                    <form id="deliveryForm" class="space-y-6">
                        
                         <!-- Name & Phone Row -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -619,7 +619,9 @@
 
         document.getElementById('deliveryForm').addEventListener("submit",(e)=>{
             e.preventDefault()
-            const subtotal = this.value
+            const subtotal = parseInt( document.getElementById('total').innerText )
+            console.log(subtotal);
+            
             const formData = new FormData(e.target)
             const data = Object.fromEntries(formData.entries());
             console.log(data);
@@ -662,6 +664,8 @@
 
         function placeOrder(subtotal,formData){
 
+            console.log(subtotal);
+            
             try{
 
              fetch('http://localhost:5000/cart/order',{

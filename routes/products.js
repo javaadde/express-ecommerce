@@ -43,7 +43,7 @@ import { carts } from './cart.js';
 
 productRouter.get('/', async(req,res)=>{
 
-    await mongoose.connect(dbURL)
+    await mongoose.connect(dbURL);
     console.log('connected');
 
     const allProducts = await products.find()
@@ -69,7 +69,7 @@ productRouter.get('/:name', async(req,res)=>{
     const allProducts = await products.find({category:category_name});
 
     console.log(category_name);
-
+    
     res.render('products',{
         products:allProducts
     })

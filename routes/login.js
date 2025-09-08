@@ -23,7 +23,13 @@ loginRouter.use(session(
          secret: 'your_secret_key',
             resave: false,
             saveUninitialized: false,
-            store: MongoStore.create({ mongoUrl: 'mongodb://localhost/MyUsers' })
+            cookie: {
+               maxAge: 60 * 24 * 60 * 60 * 1000 
+            }, 
+            store: MongoStore.create({
+                mongoUrl: 'mongodb://localhost/MyUsers' ,
+                ttl: 60 * 24 * 60 * 60
+            })
     }
 ))
 

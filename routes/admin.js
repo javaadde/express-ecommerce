@@ -2,7 +2,7 @@ import express from 'express'
 export const adminRouter = express.Router()
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
-import mongoose from 'mongoose'
+import mongoose, { mongo } from 'mongoose'
 
 // importing products collection
 import { products } from './products.js'
@@ -21,17 +21,103 @@ adminRouter.use(session(
 ))
 
 
+adminRouter.get('/', async(req,res) => {
 
-adminRouter.get('/products',checkAdmin, async(req,res)=>{
-    await mongoose.connect(dbURL)
-    const allProducts = await products.find()
+    try{
 
-     res.render('adminProducts',{
-        products:allProducts,
-     })
+        await mongoose.connect(dbURL)
+        const total_products = await products.find().countDocuments() 
+        const total_orders = await orders.find().countDocuments()
+        const registered_users = await users.find().countDocuments()
+        const total_revenew = await orders.aggregate([
+            {$group:{
+                _id:null, 
+                sum:{$sum:"$total"}
+            }},
+        ])
+
+        console.log(total_revenew);
+        
+        
+        res.render('adminDashBoard',{
+            total_revenew:total_revenew[0].sum,
+            registered_users:registered_users,
+            total_orders:total_orders,
+            total_products:total_products,
+        })
+    }
+    catch(err){
+        console.log(err);
+    }
 })
 
-adminRouter.post('/products/add', async(req,res) => {
+
+
+// ==================================[products]
+
+
+adminRouter.get('/products',checkAdmin, async(req,res)=>{
+
+    const category = req.query.category || undefined
+    const id = req.query.id || undefined
+    console.log(id, category);
+
+    await mongoose.connect(dbURL)
+
+
+    if(category != undefined){
+
+        if(category === 'all'){
+     
+            const allProducts = await products.find()
+             res.render('adminProducts',{
+                products:allProducts,
+                category:category,
+                id:''
+             })
+        }
+        else{
+           
+             const allProducts = await products.find({category:category})
+            
+             res.render('adminProducts',{
+                products:allProducts,
+                category:category,
+                id:''
+             })
+        }
+
+    
+    }
+
+    else if(id != undefined){
+     const allProducts = await products.find({_id:id})
+    
+     res.render('adminProducts',{
+        products:allProducts,
+        category:'',
+        id:id
+     })
+    
+    }
+
+    else{
+     const allProducts = await products.find()
+    
+     res.render('adminProducts',{
+        products:allProducts,
+        category:'',
+        id:'id'
+     })        
+    }
+
+})
+
+
+
+
+
+adminRouter.post('/products/add',checkAdmin, async(req,res) => {
 
     await mongoose.connect(dbURL);
 
@@ -63,7 +149,7 @@ adminRouter.post('/products/add', async(req,res) => {
 })
 
 
-adminRouter.delete('/products/delete', async(req,res) => {
+adminRouter.delete('/products/delete',checkAdmin, async(req,res) => {
     
     const product_id = req.body.pro_id
     
@@ -79,7 +165,7 @@ adminRouter.delete('/products/delete', async(req,res) => {
 })
 
 
-adminRouter.put('/products/update',async(req,res)=>{
+adminRouter.put('/products/update',checkAdmin,async(req,res)=>{
     
     const pro = req.body;
     const _id = req.body.id
@@ -135,18 +221,27 @@ function checkAdmin(req,res,next){
     }
 }
 
-
+// ==============================================[orders]==============================================
 //  importing orders collection 
 import { orders } from './cart.js'
+import { users } from './signup.js'
 
-adminRouter.get('/orders/:username', async(req,res)=>{
+
+adminRouter.get('/orders',checkAdmin,(req,res)=>{
+    res.render('ordersA',{
+        username:'username'
+    })
+})
+
+adminRouter.get('/orders/:username',checkAdmin, async(req,res)=>{
      const user_id = req.params.username;
     try{
        
             await mongoose.connect(dbURL )
             const orderArray = await orders.find({user_id:user_id})
-            res.render('orders',{
+            res.render('adminOrders',{
                 orders:orderArray,
+                username:user_id,
             })
         }
         catch(err){
@@ -155,3 +250,77 @@ adminRouter.get('/orders/:username', async(req,res)=>{
 })
 
 
+// order details for crud 
+
+adminRouter.get('/order/details/:id',checkAdmin, async(req,res)=>{
+    const order_id = req.params.id;
+    try{
+        await mongoose.connect(dbURL);
+        const data = await orders.findOne({_id:order_id})
+        res.render('adminOrderCrud',{
+            details:data,
+        })
+    }
+    catch(err){
+        console.log(err);
+        
+    }
+})
+
+
+// ===================[crud]===>
+
+
+    //  status updations 
+    adminRouter.put('/order/:id/status',checkAdmin, async(req,res)=>{
+        const order_id = req.params.id;
+        const statusInp = req.body.status;
+
+        try{
+            await mongoose.connect(dbURL);
+            const updt = await orders.updateOne({_id:order_id},{$set:{status:statusInp}})
+            console.log('ok');
+            res.json(
+                {Status:statusInp}
+            )
+        }
+        catch(err){
+            console.log(err);
+        }
+    })
+
+
+    // order deletion
+    adminRouter.delete('/order/delete/:id',checkAdmin,async(req,res)=>{
+        const order_id = req.params.id;
+        try{
+            await mongoose.connect(dbURL);
+            const dlt =  await orders.deleteOne({_id:order_id});
+
+            console.log(dlt);
+            
+            res.json({
+                msg:'deleted'
+            })
+        }
+        catch(err){
+            console.log(err);
+            
+        }
+    })
+
+
+
+    // ==========================================[ USERS DIRECTORY ]==========================================
+
+    adminRouter.get('/users', async (req,res) =>{
+
+        await mongoose.connect(dbURL);
+        const allusers = await users.find()
+
+        console.log(allusers);
+        
+        res.render('allUsers',{
+            users:allusers
+        })
+    })

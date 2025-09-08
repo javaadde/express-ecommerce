@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Michroma:wght@400&family=Comfortaa:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'off-white': '#fafafa',
+                        'off-black': '#1a1a1a',
+                        'soft-gray': '#f5f5f5',
+                        'dark-gray': '#2a2a2a'
+                    },
+                     fontFamily: {
+                        'michroma': ['Michroma', 'sans-serif'],
+                        'comfortaa': ['Comfortaa', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+<body>
+
+    <div class="bg-off-white w-full min-h-screen flex flex-col items-center py-8">
+
+         <div class="font-comfortaa">
+            <input 
+            type="text" 
+            id="username"
+            placeholder="username"
+            value="<%= username %>" 
+            class="p-2 rounded border-2 border-off-black" 
+            required>
+
+            <button 
+            onclick="seeOrders()"
+            class="bg-off-black text-off-white p-2 rounded border-2 border-off-black">
+                 See all Orders
+            </button>
+         </div>
+
+
+
+         <div class="p-6 ">
+            <div 
+            id="ordersDiv"
+            class="bg-off-white min-h-screen">
+
+                <%  function getStatusColor(status) {
+                        switch (status.toLowerCase()) {
+                            case 'delivered': return 'bg-green-100 text-green-800';
+                            case 'shipped': return 'bg-blue-100 text-blue-800';
+                            case 'processing': return 'bg-yellow-100 text-yellow-800';
+                            case 'cancelled': return 'bg-red-100 text-red-800';
+                            default: return 'bg-gray-100 text-gray-800';
+                        }
+                    } %>
+
+
+
+                <div class="max-w-6xl mx-auto p-6 flex flex-col gap-8 mt-8 font-comfortaa">
+
+                    <!-- Orders List -->
+
+
+
+                    <% if ( orders.length > 0){ %>
+
+                    <% orders.forEach( (order) => {  %>
+                        
+                    <div class="space-y-6 flex flex-col gap-4" id="ordersList">
+                        <!-- Orders will be populated here -->
+
+
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow cursor-pointer"
+                        id="<%= order._id %>"
+                        onclick="showOrderDetails(this)">
+                                <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between ">
+                                    <!-- Order Info -->
+                                    <div class="flex-1">
+                                        <div class="flex items-center space-x-4 mb-2">
+                                            <h3 class="text-lg font-semibold text-off-black">Order <%= orders.indexOf(order)+1 %></h3>
+                                            <span class="px-3 py-1 rounded-full text-xs font-medium <%= getStatusColor(order.status) %> capitalize">
+                                            <%= order.status %>
+                                            </span>
+                                        </div>
+                                        <p class="text-dark-gray text-sm mb-2">Placed on: &nbsp; <%= order.date.toLocaleString() %></p>
+                                        <p class="text-dark-gray text-sm"><%= order.items.length %> items </p>
+                                    </div>
+
+                                    <!-- Order Preview -->
+                                    <div class="flex items-center space-x-4">
+                                        <% order.items.forEach( (item) => { %>
+                                        <!-- Item Images -->
+                                        <div class="flex -space-x-2">
+                                            <img src="<%= item.url %>" alt="${item.name}" class="w-10 h-15 rounded-lg border-2 border-white object-cover bg-soft-gray">
+                                        </div>
+                                        <% }) %>
+
+                                        <!-- Total & Arrow -->
+                                        <div class="text-right flex">
+                                            <p class="text-lg font-semibold text-off-black"><%= order.total %></p>
+                                            <svg class="w-5 h-5 text-dark-gray mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                            </svg>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+                    
+                    <%  }); %>
+                    <% }else{%>
+                    
+                    
+                    
+                    
+                    <!-- Empty State -->
+                <div id="emptyState" class=" text-center py-16">
+                    <h3 class="text-xl font-medium text-gray-500 mb-2">No orders yet</h3>
+                    <p class="text-gray-400 mb-6">This user have been placed no orders</p>
+                </div>
+
+                <% } %>
+
+                
+                </div>  
+
+
+            </div>
+         </div>
+
+
+    </div>
+
+
+    
+
+    <script>
+
+
+        function seeOrders(){
+            const id = document.getElementById('username').value
+            window.location.href=`http://localhost:5000/admin/orders/${id}`
+        }
+
+     
+        function showOrderDetails(orderId) {
+            console.log(orderId.id);
+            
+            window.location.href=`http://localhost:5000/admin/order/details/${orderId.id}`
+        }
+
+
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('orderModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        
+    </script>
+    
+</body>
+</html>

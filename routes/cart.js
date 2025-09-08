@@ -40,9 +40,11 @@ export const carts = mongoose.model('carts',cartSchema)
 
 cartRouter.get('/',async(req,res)=>{
 
-    if(req.session.data.role === 'admin'){
-      return  res.render('404')
-    }
+    if(req.session && req.session.data){
+
+        if( req.session.data.role === 'admin' ){
+         return  res.render('404')
+        }
 
     const cartId = req.session.data.username;
     
@@ -54,6 +56,10 @@ cartRouter.get('/',async(req,res)=>{
         items:cartData.items,
         subtotal:0,
     })
+
+   }else{
+    res.render('login')
+   }
 })
 
 
